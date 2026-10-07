@@ -1,0 +1,11 @@
+round,type,question,code_snippet,option_a,option_b,option_c,option_d,correct_answer,synonyms,points,timer_seconds
+Trial,MCQ,"[WARM-UP / TRIAL] Which collegiate department is hosting today's IT Olympics event?","",College of Nursing,College of Computer Studies,College of Business,College of Education,B,,0,15
+Trial,IDENTIFICATION,"[WARM-UP / TRIAL] Name the official university mascot or animal symbol of Our Lady of Fatima University.","","","","","",Phoenix,"phoenix;fatima phoenix;the phoenix",0,15
+Easy,MCQ,"Which HTML tag is used to define an internal style sheet?","","<script>","<css>","<style>","<stylesheet>",C,,1,15
+Easy,MCQ,"In JavaScript, which operator is used to compare both value and data type?","","==","===","!=","=",B,,1,15
+Easy,IDENTIFICATION,"What does the acronym 'CPU' stand for in computer hardware?","","","","","",Central Processing Unit,"central processing unit;central processor",1,15
+Average,MCQ,"What is the output of the following JavaScript snippet?","console.log(typeof NaN);","number","nan","undefined","object",A,,2,30
+Average,IDENTIFICATION,"What is the standard port number used for secure HTTP traffic (HTTPS)?","","","","","",443,"443;port 443",2,30
+Difficult,MCQ,"Which SQL constraint uniquely identifies each record in a database table?","","FOREIGN KEY","CHECK","PRIMARY KEY","UNIQUE",C,,3,45
+Difficult,IDENTIFICATION,"In cryptography, what type of cipher uses two distinct keys: a public key for encryption and a private key for decryption?","","","","","",Asymmetric,"asymmetric;asymmetric cipher;public-key;public key cryptography",3,45
+Clincher,IDENTIFICATION,"Which transport layer protocol operates connectionlessly without requiring a three-way handshake?","","","","","",UDP,"udp;user datagram protocol",5,30

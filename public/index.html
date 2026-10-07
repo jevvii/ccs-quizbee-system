@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OLFU IT Olympics Quiz Bee — Landing Hub</title>
+  <script>(function(){try{if(localStorage.getItem('quizbee_theme')==='light'||(!localStorage.getItem('quizbee_theme')&&window.matchMedia('(prefers-color-scheme: light)').matches))document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+  <link rel="stylesheet" href="/css/shared.css">
+  <style>
+    .hub-container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 4.5rem 1.5rem 3rem;
+    }
+
+    .hero-section {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      background-color: rgba(190, 18, 60, 0.12);
+      color: var(--color-rose-muted);
+      border: 1px solid rgba(190, 18, 60, 0.25);
+      border-radius: var(--radius-full);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.35rem 0.95rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-size: 3.15rem;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      line-height: 1.1;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 4.5rem;
+    }
+
+    @media (max-width: 960px) {
+      .role-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 580px) {
+      .role-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .role-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 1.6rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .role-card:hover {
+      border-color: var(--border-active);
+      background-color: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+
+    .role-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background-color: rgba(190, 18, 60, 0.12);
+      color: var(--color-rose-muted);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .role-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.015em;
+      margin-bottom: 0.5rem;
+    }
+
+    .role-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 1.75rem;
+      flex: 1;
+    }
+
+    .hub-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 2rem;
+      padding-bottom: 2.5rem;
+      color: var(--text-muted);
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header matching minimal reference with Theme Toggle -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-logo-badge">
+        <img src="/logo/ccs-logo.png" alt="CCS Logo" class="brand-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span class="brand-logo-text" style="display: none;">ccs</span>
+      </div>
+      <div>
+        <div class="brand-title">OLFU IT Olympics 2026</div>
+        <div class="brand-subtitle">College of Computer Studies</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="btn-theme-toggle" class="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+        <svg class="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+      <div class="flex items-center gap-2">
+        <span class="status-dot online"></span>
+        <span style="font-size: 0.8125rem; color: var(--text-secondary);">LAN engine active</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="hub-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <span class="hero-pill">Our Lady of Fatima University</span>
+      <h1 class="hero-title">IT Olympics Quiz Bee</h1>
+      <p class="hero-sub">An offline tournament platform for the computer lab. Choose your role to get started.</p>
+    </section>
+
+    <!-- Role Selection Grid (4-Column Minimalist) -->
+    <div class="role-grid">
+      <!-- 1. Quizmaster -->
+      <a href="/quizmaster" class="role-card">
+        <div class="role-letter">Q</div>
+        <h2 class="role-name">Quizmaster</h2>
+        <p class="role-desc">Stage questions, run the clock, and watch all 60 stations live.</p>
+        <button class="btn btn-primary">Open dashboard</button>
+      </a>
+
+      <!-- 2. Contestant -->
+      <a href="/contestant" class="role-card">
+        <div class="role-letter">C</div>
+        <h2 class="role-name">Contestant</h2>
+        <p class="role-desc">Sign in with your PIN and answer from your workstation.</p>
+        <button class="btn btn-secondary">Open terminal</button>
+      </a>
+
+      <!-- 3. Stage Projector -->
+      <a href="/projector" class="role-card">
+        <div class="role-letter">P</div>
+        <h2 class="role-name">Stage projector</h2>
+        <p class="role-desc">The full-screen audience view with timer, question, and standings.</p>
+        <button class="btn btn-secondary">Open projector</button>
+      </a>
+
+      <!-- 4. Judge Panel -->
+      <a href="/judge" class="role-card">
+        <div class="role-letter">J</div>
+        <h2 class="role-name">Judge panel</h2>
+        <p class="role-desc">Approve or reject identification answers as they come in.</p>
+        <button class="btn btn-secondary">Open judge panel</button>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="hub-footer">
+      <p>OLFU IT Olympics LAN Quiz Bee &middot; College of Computer Studies &middot; ITPM 311. Runs fully offline on the local network.</p>
+    </footer>
+  </main>
+
+  <script src="/js/theme.js"></script>
+</body>
+</html>

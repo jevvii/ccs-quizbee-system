@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OLFU IT Olympics Quiz Bee — Quizmaster Dashboard</title>
+  <script>(function(){try{if(localStorage.getItem('quizbee_theme')==='light'||(!localStorage.getItem('quizbee_theme')&&window.matchMedia('(prefers-color-scheme: light)').matches))document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+  <link rel="stylesheet" href="/css/shared.css">
+  <link rel="stylesheet" href="/css/quizmaster.css">
+</head>
+<body>
+  <!-- Global Application Header with CCS Logo -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-logo-badge">
+        <img src="/logo/ccs-logo.png" alt="CCS Logo" class="brand-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span class="brand-logo-text" style="display: none;">ccs</span>
+      </div>
+      <div>
+        <div class="brand-title">
+          OLFU IT Olympics &bull; Quizmaster
+        </div>
+        <div class="brand-subtitle">Tournament Master Command Center &bull; College of Computer Studies</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="audio-widget">
+        <button id="btn-audio-mute" class="audio-btn" title="Toggle Sound">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+        </button>
+        <input type="range" id="audio-volume-slider" class="audio-slider" min="0" max="1" step="0.05" value="0.8">
+      </div>
+      <button id="btn-theme-toggle" class="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+        <svg class="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+      <button id="btn-open-override" class="btn btn-secondary btn-sm">Manual Override</button>
+      <div class="flex items-center gap-2">
+        <span id="qm-connection-dot" class="status-dot offline"></span>
+        <span id="qm-connection-status" style="font-size: 0.8125rem; color: var(--text-secondary); font-family: var(--font-mono);">Connecting...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quizmaster Main Grid -->
+  <main class="qm-container">
+    <!-- Left Column: Controls & Question Selection -->
+    <section class="qm-sidebar">
+      <!-- 1. Master Timer & FSM Phase Card -->
+      <div class="card qm-timer-card">
+        <div class="card-header" style="justify-content: center; border: none; padding-bottom: 0;">
+          <span id="current-phase-badge" class="phase-pill badge-maroon">LOBBY</span>
+        </div>
+        <div id="timer-display" class="timer-digits">00:00</div>
+        <p id="timer-status-hint" style="font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 500;">Tournament Standby</p>
+
+        <!-- Phase Advancer / Controls Grid -->
+        <div class="control-btn-grid">
+          <button id="btn-stage" class="btn btn-primary">Stage Question</button>
+          <button id="btn-start-timer" class="btn btn-accent" disabled>Start Timer</button>
+          <button id="btn-pause-timer" class="btn btn-secondary" disabled>Pause</button>
+          <button id="btn-resume-timer" class="btn btn-secondary" disabled>Resume</button>
+          <button id="btn-force-lock" class="btn btn-danger" disabled>Force Lock</button>
+          <button id="btn-reveal" class="btn btn-primary" disabled>Reveal Answer</button>
+        </div>
+
+        <div class="single-btn-row">
+          <button id="btn-leaderboard" class="btn btn-accent">Show Leaderboard</button>
+        </div>
+        <div class="single-btn-row">
+          <button id="btn-reset" class="btn btn-secondary btn-sm" style="opacity: 0.75;">Reset Round</button>
+        </div>
+      </div>
+
+      <!-- 2. Question Bank Selector Card -->
+      <div class="card qm-question-card">
+        <div class="card-header">
+          <h2 class="card-title">Question Bank</h2>
+          <div class="flex items-center gap-2">
+            <button id="btn-open-import" class="btn btn-secondary btn-sm" title="Upload official CSV question bank">Import CSV</button>
+            <span id="question-count-badge" class="badge badge-slate">0 Questions</span>
+          </div>
+        </div>
+
+        <div class="select-wrapper">
+          <select id="question-select" class="input-control">
+            <option value="">-- Select a Question to Stage --</option>
+          </select>
+        </div>
+
+        <!-- Question Preview Sub-Card -->
+        <div id="current-question-card" class="question-preview-box">
+          <div class="preview-meta-row">
+            <span id="preview-round-badge" class="badge badge-maroon">ROUND 1</span>
+            <span id="preview-points-badge" class="badge badge-gold">1 POINT</span>
+          </div>
+
+          <div id="preview-question-text" class="preview-question-text">
+            No question currently selected.
+          </div>
+
+          <!-- Code Snippet Container -->
+          <pre id="preview-code-block" class="code-preview-block hidden"><code id="preview-code-content"></code></pre>
+
+          <!-- Options Preview List -->
+          <div id="preview-options-container" class="preview-options-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Column: Live Workstation Telemetry & Alerts -->
+    <section class="qm-main">
+      <!-- Telemetry Counters Summary Bar -->
+      <div class="telemetry-summary-bar">
+        <div class="stat-card">
+          <div class="stat-label">Online Stations</div>
+          <div id="stat-online" class="stat-value text-emerald">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Offline Stations</div>
+          <div id="stat-offline" class="stat-value" style="color: var(--text-muted);">60</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Submissions</div>
+          <div id="submission-count" class="stat-value text-gold">0 / 60</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Cheat Incidents</div>
+          <div id="stat-incidents" class="stat-value text-maroon">0</div>
+        </div>
+      </div>
+
+      <!-- 60-Seat Live Telemetry Matrix -->
+      <div class="card telemetry-grid-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Laboratory Telemetry Matrix (Terminals 01&ndash;60)</h2>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.15rem;">Real-time connection, submission progress, and integrity monitor.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="badge badge-slate" style="font-size: 0.7rem;">&bull; Green = Online</span>
+            <span class="badge badge-maroon" style="font-size: 0.7rem;">&bull; Maroon = Submitted</span>
+            <span class="badge badge-danger" style="font-size: 0.7rem;">&bull; Red = Alert</span>
+          </div>
+        </div>
+
+        <div id="telemetry-grid" class="telemetry-grid">
+          <!-- 60 terminal tiles generated dynamically by public/js/quizmaster.js -->
+        </div>
+      </div>
+
+      <!-- Anti-Cheat Incident Feed -->
+      <div class="card alert-feed-card">
+        <div class="card-header">
+          <div class="flex items-center gap-2">
+            <h2 class="card-title">Integrity Incident Feed</h2>
+            <span class="badge badge-danger">Live Telemetry</span>
+          </div>
+          <button id="btn-clear-alerts" class="btn btn-secondary btn-sm">Clear Feed</button>
+        </div>
+
+        <div id="alert-feed" class="alert-feed">
+          <div class="alert-item" style="background: var(--bg-inset); border-color: var(--border-subtle); color: var(--text-muted); justify-content: center;">
+            No cheat incidents logged for this tournament session.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Manual Score Override Modal -->
+  <div id="override-modal" class="modal-backdrop hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="card-title">Manual Score Override</h3>
+        <button id="btn-close-override" class="btn btn-secondary btn-sm">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label for="override-pin" class="form-label">Contestant Terminal PIN</label>
+        <input type="text" id="override-pin" class="input-control" placeholder="e.g. 1005" maxlength="4">
+      </div>
+
+      <div class="form-group">
+        <label for="override-score" class="form-label">New Total Score</label>
+        <input type="number" id="override-score" class="input-control" placeholder="0" min="0">
+      </div>
+
+      <div class="form-group">
+        <label for="override-reason" class="form-label">Override Reason</label>
+        <input type="text" id="override-reason" class="input-control" placeholder="e.g. Lab PC rebooted during round">
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-cancel-override" class="btn btn-secondary">Cancel</button>
+        <button id="btn-submit-override" class="btn btn-primary">Apply Override</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question Bank CSV Import Modal -->
+  <div id="import-modal" class="modal-backdrop hidden">
+    <div class="modal-content" style="max-width: 520px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="card-title">Import Questions (CSV)</h3>
+          <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.25rem;">
+            Faculty Competition-Day Question Staging
+          </p>
+        </div>
+        <button id="btn-close-import" class="btn btn-secondary btn-sm">&times;</button>
+      </div>
+
+      <!-- Downloadable Question Bank Template -->
+      <div style="background-color: var(--bg-inset); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 0.85rem 1rem; margin-bottom: 1.25rem;">
+        <div class="flex items-center justify-between" style="gap: 0.75rem;">
+          <div>
+            <div style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary);">Faculty CSV Template</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.15rem;">
+              Pre-formatted with Trial, MCQ &amp; ID column headers
+            </div>
+          </div>
+          <a href="/api/questions/template" download="quizbee_question_template.csv" id="btn-download-template" class="btn btn-secondary btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; white-space: nowrap;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Template
+          </a>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="csv-file-input" class="form-label">Upload CSV File</label>
+        <input type="file" id="csv-file-input" class="input-control" accept=".csv,text/csv">
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">
+          Load question sheet from flash drive right before tournament starts.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="import-mode-select" class="form-label">Import Mode</label>
+        <select id="import-mode-select" class="input-control">
+          <option value="replace">Replace Bank (Recommended for Event Day — Clears Sample Questions)</option>
+          <option value="append">Append (Add to Existing Bank)</option>
+        </select>
+      </div>
+
+      <div id="import-status-box" class="hidden" style="padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.8125rem; margin-bottom: 1rem;"></div>
+
+      <div class="modal-actions">
+        <button id="btn-cancel-import" class="btn btn-secondary">Cancel</button>
+        <button id="btn-submit-import" class="btn btn-primary">Upload &amp; Stage</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Local Scripts (Strictly Zero CDN) -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/audio.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/quizmaster.js"></script>
+</body>
+</html>

@@ -1,0 +1,519 @@
+/**
+ * public/css/projector.css
+ * OLFU IT Olympics LAN Quiz Bee System (ITPM 311)
+ * 1080p Stage Spectator Display & Animated Leaderboard (Matte Dark / Zero-CDN)
+ */
+
+.stage-viewport {
+  width: 100vw;
+  height: 100vh;
+  max-width: 1920px;
+  max-height: 1080px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  box-sizing: border-box;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ============================================================================
+ * 1. Stage Header Bar
+ * ============================================================================ */
+.stage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.15rem 3.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-secondary);
+  z-index: 20;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.stage-brand-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.stage-brand-title span {
+  color: var(--color-maroon);
+}
+
+[data-theme="dark"] .stage-brand-title span,
+:root:not([data-theme="light"]) .stage-brand-title span {
+  color: var(--color-rose-muted);
+}
+
+.stage-round-pill {
+  font-size: 1rem;
+  padding: 0.45rem 1.25rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.stage-audio-banner {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  right: 0;
+  background-color: var(--color-rose);
+  color: #ffffff;
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  z-index: 50;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================================================
+ * 2. Stage Main Arena
+ * ============================================================================ */
+.stage-arena {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem 4.5rem;
+  position: relative;
+}
+
+/* Lobby Welcome View */
+.stage-lobby-view {
+  text-align: center;
+  max-width: 950px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stage-lobby-emblem-badge {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-rose);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.stage-lobby-emblem-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-full);
+}
+
+.stage-lobby-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.stage-lobby-sub {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================================
+ * 3. Active Question Arena
+ * ============================================================================ */
+.stage-question-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.stage-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stage-timer-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 0.65rem 1.85rem;
+  border-radius: var(--radius-xl);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.stage-timer-digits {
+  font-family: var(--font-mono);
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+}
+
+.stage-timer-digits.warning {
+  color: var(--color-warning);
+}
+
+.stage-timer-digits.danger {
+  color: var(--color-danger);
+  animation: stagePulse 0.5s infinite alternate;
+}
+
+@keyframes stagePulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.04); }
+}
+
+.stage-question-text {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease, opacity 0.25s ease;
+}
+
+/* Staged Question Flash Entrance Effect */
+@keyframes stagePromptFlash {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.stage-question-text.staged-flash {
+  animation: stagePromptFlash 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Dramatic Countdown Notice (shown when timer starts, question prompt hides) */
+.stage-countdown-notice {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-2xl);
+  padding: 3.5rem 2.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.countdown-pulse-ring {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: rgba(245, 158, 11, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: countdownRingPulse 1.2s infinite;
+}
+
+.countdown-pulse-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+}
+
+@keyframes countdownRingPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.6); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+.countdown-notice-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.countdown-notice-sub {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.stage-code-block {
+  background-color: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 2rem;
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  line-height: 1.6;
+  color: #0284c7;
+  max-height: 320px;
+  overflow-y: auto;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+[data-theme="dark"] .stage-code-block,
+:root:not([data-theme="light"]) .stage-code-block {
+  color: #38bdf8;
+}
+
+.stage-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.stage-option-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.35rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.stage-option-card.correct {
+  border-color: var(--color-success);
+  background-color: rgba(16, 185, 129, 0.12);
+  color: var(--color-success);
+}
+
+[data-theme="dark"] .stage-option-card.correct,
+:root:not([data-theme="light"]) .stage-option-card.correct {
+  color: #ffffff;
+}
+
+.stage-option-card.dimmed {
+  opacity: 0.25;
+}
+
+.stage-option-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-weight: 900;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.stage-option-card.correct .stage-option-letter {
+  background-color: var(--color-success);
+  color: #ffffff;
+  border-color: var(--color-success);
+}
+
+/* ============================================================================
+ * 4. Dramatic Answer Reveal Card
+ * ============================================================================ */
+.reveal-card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--color-rose);
+  border-radius: var(--radius-2xl);
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  transition: background-color 0.2s ease;
+}
+
+.reveal-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-rose);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+}
+
+.reveal-answer {
+  font-size: 3.25rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+/* ============================================================================
+ * 5. Leaderboard Arena & 3-Tier Podium
+ * ============================================================================ */
+.stage-leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.podium-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2.25rem;
+  height: 380px;
+  padding-bottom: 1rem;
+}
+
+.podium-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 240px;
+}
+
+.podium-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.podium-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+}
+
+.podium-score {
+  font-size: 1.85rem;
+  font-weight: 900;
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+}
+
+.podium-step {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  font-family: var(--font-mono);
+  font-size: 3rem;
+  font-weight: 900;
+  color: #ffffff;
+  transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.podium-gold .podium-step {
+  height: 220px;
+  background-color: #b45309;
+  border-top: 2px solid #f59e0b;
+}
+
+.podium-silver .podium-step {
+  height: 160px;
+  background-color: #475569;
+  border-top: 2px solid #94a3b8;
+}
+
+.podium-bronze .podium-step {
+  height: 120px;
+  background-color: #78350f;
+  border-top: 2px solid #d97706;
+}
+
+[data-theme="light"] .podium-gold .podium-step {
+  background-color: #d97706;
+  border-top: 3px solid #f59e0b;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
+}
+
+[data-theme="light"] .podium-silver .podium-step {
+  background-color: #64748b;
+  border-top: 3px solid #94a3b8;
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.2);
+}
+
+[data-theme="light"] .podium-bronze .podium-step {
+  background-color: #b45309;
+  border-top: 3px solid #d97706;
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.2);
+}
+
+/* Ranked Roster Table for Ranks 4+ */
+.stage-roster-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease;
+}
+
+.stage-roster-table th, .stage-roster-table td {
+  padding: 0.85rem 1.5rem;
+  text-align: left;
+}
+
+.stage-roster-table th {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.stage-roster-table tr:not(:last-child) {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.stage-roster-table tbody tr:hover {
+  background-color: var(--bg-card-hover);
+}

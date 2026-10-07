@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OLFU IT Olympics Quiz Bee — Contestant Terminal</title>
+  <script>(function(){try{if(localStorage.getItem('quizbee_theme')==='light'||(!localStorage.getItem('quizbee_theme')&&window.matchMedia('(prefers-color-scheme: light)').matches))document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+  <link rel="stylesheet" href="/css/shared.css">
+  <link rel="stylesheet" href="/css/contestant.css">
+</head>
+<body class="contestant-body">
+  <!-- Minimal Header for Lab Terminal -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-logo-badge">
+        <img src="/logo/ccs-logo.png" alt="CCS Logo" class="brand-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span class="brand-logo-text" style="display: none;">ccs</span>
+      </div>
+      <div>
+        <div class="brand-title">OLFU IT Olympics 2026</div>
+        <div class="brand-subtitle">Contestant Terminal</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="audio-widget">
+        <button id="btn-audio-mute" class="audio-btn" title="Toggle Sound">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+        </button>
+        <input type="range" id="audio-volume-slider" class="audio-slider" min="0" max="1" step="0.05" value="0.8">
+      </div>
+      <button id="btn-theme-toggle" class="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+        <svg class="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+      <div class="flex items-center gap-2">
+        <span id="terminal-dot" class="status-dot offline"></span>
+        <span id="terminal-status-text" style="font-size: 0.8125rem; color: var(--text-secondary);">Offline</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="contestant-layout">
+    <!-- View 1: PIN Authentication Screen -->
+    <section id="login-section" class="login-container">
+      <div class="card login-card" style="padding: 2.5rem 2rem;">
+        <span class="badge badge-maroon" style="margin-bottom: 1rem;">Workstation Authentication</span>
+        <h1 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; color: var(--text-primary);">Enter Terminal PIN</h1>
+        <p style="font-size: 0.875rem; color: #828290; margin-bottom: 1.5rem;">Enter the 4-digit PIN assigned to your workstation desk (1001&ndash;1060).</p>
+
+        <div class="pin-display-wrapper">
+          <input type="text" id="pin-input" class="pin-input-field" placeholder="----" maxlength="4" autocomplete="off" autofocus>
+        </div>
+
+        <div id="login-error" class="alert alert-danger hidden" style="margin-bottom: 1rem; color: #f43f5e; font-size: 0.875rem;"></div>
+
+        <button id="btn-login" class="btn btn-primary btn-lg" style="width: 100%; margin-bottom: 1.25rem;">Connect &amp; Lock Screen</button>
+
+        <!-- On-Screen Numeric Keypad -->
+        <div class="keypad-grid">
+          <button class="keypad-btn" data-key="1">1</button>
+          <button class="keypad-btn" data-key="2">2</button>
+          <button class="keypad-btn" data-key="3">3</button>
+          <button class="keypad-btn" data-key="4">4</button>
+          <button class="keypad-btn" data-key="5">5</button>
+          <button class="keypad-btn" data-key="6">6</button>
+          <button class="keypad-btn" data-key="7">7</button>
+          <button class="keypad-btn" data-key="8">8</button>
+          <button class="keypad-btn" data-key="9">9</button>
+          <button class="keypad-btn" data-key="clear" style="color: #f43f5e; font-size: 0.95rem; font-weight: 700;">CLR</button>
+          <button class="keypad-btn" data-key="0">0</button>
+          <button class="keypad-btn" data-key="backspace" style="color: #828290; font-size: 1.1rem; font-weight: 700;">&larr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- View 2: Active Tournament Station -->
+    <section id="active-section" class="hidden">
+      <!-- Station Header -->
+      <div id="contestant-info" class="terminal-header">
+        <div class="terminal-contestant-meta">
+          <div id="terminal-number-badge" class="terminal-badge">T00</div>
+          <div>
+            <div id="contestant-name" style="font-weight: 700; font-size: 1.1rem; color: var(--text-primary);">Contestant Name</div>
+            <div id="contestant-dept" style="font-size: 0.75rem; color: var(--text-secondary);">Department / Section</div>
+          </div>
+        </div>
+
+        <div class="terminal-score-box">
+          <span class="terminal-score-label">Current Score</span>
+          <span id="current-score" class="terminal-score-val">0 PTS</span>
+        </div>
+      </div>
+
+      <!-- Live Epoch Timer Progress Bar -->
+      <div class="timer-container">
+        <div class="timer-bar-track">
+          <div id="timer-bar" class="timer-bar-fill"></div>
+        </div>
+        <div class="timer-text-row">
+          <span id="phase-label" style="text-transform: uppercase; color: #fb7185;">COUNTDOWN ACTIVE</span>
+          <span id="timer-value">00s</span>
+        </div>
+      </div>
+
+      <!-- Question Container Card -->
+      <div id="question-section" class="question-card">
+        <div class="question-meta-tags">
+          <span id="round-badge" class="badge badge-maroon">ROUND -</span>
+          <span id="item-badge" class="badge badge-slate hidden">ITEM 1</span>
+          <span id="point-badge" class="badge badge-emerald">0 POINTS</span>
+        </div>
+
+        <div id="question-text" class="question-title">Waiting for Quizmaster to stage next question...</div>
+
+        <!-- Syntax-highlighted Code Block -->
+        <pre id="code-snippet" class="code-container hidden"><code id="code-content"></code></pre>
+
+        <!-- Reading Phase Lock Banner Overlay -->
+        <div id="reading-lock" class="reading-lock-message hidden">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          Question Reading Phase &mdash; Inputs strictly locked. Listen to the Quizmaster.
+        </div>
+
+        <!-- Submission Status Banner -->
+        <div id="submission-status" class="alert alert-info hidden" style="margin-top: 1rem;"></div>
+
+        <!-- Answering Forms -->
+        <!-- Form A: Multiple Choice Question (MCQ) -->
+        <div id="mcq-container" class="mcq-grid hidden" style="margin-top: 1.5rem;">
+          <button id="opt-a" class="mcq-option-btn" data-option="A">
+            <span class="mcq-letter">A</span>
+            <span class="mcq-text" id="text-opt-a">Option A</span>
+          </button>
+          <button id="opt-b" class="mcq-option-btn" data-option="B">
+            <span class="mcq-letter">B</span>
+            <span class="mcq-text" id="text-opt-b">Option B</span>
+          </button>
+          <button id="opt-c" class="mcq-option-btn" data-option="C">
+            <span class="mcq-letter">C</span>
+            <span class="mcq-text" id="text-opt-c">Option C</span>
+          </button>
+          <button id="opt-d" class="mcq-option-btn" data-option="D">
+            <span class="mcq-letter">D</span>
+            <span class="mcq-text" id="text-opt-d">Option D</span>
+          </button>
+        </div>
+
+        <!-- Form B: Identification Question -->
+        <div id="id-container" class="id-form hidden" style="margin-top: 1.5rem;">
+          <label style="font-size: 0.8125rem; color: var(--text-secondary); font-weight: 600;">Type your answer below:</label>
+          <input type="text" id="answer-input" class="id-input-field" placeholder="Enter answer..." autocomplete="off">
+          <button id="btn-submit-answer" class="btn btn-primary btn-lg" style="align-self: flex-end;">Submit Answer</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Fullscreen Exit Incident Warning Overlay Modal -->
+  <div id="fullscreen-warning" class="modal-overlay hidden">
+    <div class="fullscreen-warning-modal">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem; color: #f43f5e;">&#9888;</div>
+      <h2 style="color: var(--text-primary); font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem;">Security Violation Detected</h2>
+      <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1.5rem; line-height: 1.5;">
+        You have exited fullscreen or switched windows. This incident has been logged and reported to the Quizmaster telemetry grid.
+      </p>
+      <button id="btn-reenter-fullscreen" class="btn btn-danger btn-lg" style="width: 100%;">Return to Fullscreen</button>
+    </div>
+  </div>
+
+  <!-- Scripts (Strictly Local Offline Scripts - Zero CDN) -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/audio.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/contestant.js"></script>
+</body>
+</html>

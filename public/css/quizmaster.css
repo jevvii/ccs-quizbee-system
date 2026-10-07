@@ -1,0 +1,392 @@
+/**
+ * public/css/quizmaster.css
+ * OLFU IT Olympics LAN Quiz Bee System (ITPM 311)
+ * Modern Minimalist Maroon Dashboard Styles (Matte Dark / Zero-CDN)
+ */
+
+.qm-container {
+  display: grid;
+  grid-template-columns: 460px 1fr;
+  gap: 1.5rem;
+  padding: 1.75rem 2rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  min-height: calc(100vh - 60px);
+}
+
+@media (max-width: 1240px) {
+  .qm-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================================
+ * Left Column: Command & Staging Panel
+ * ============================================================================ */
+.qm-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Master Timer Control Card */
+.qm-timer-card {
+  text-align: center;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem 1.5rem;
+}
+
+.timer-digits {
+  font-family: var(--font-mono);
+  font-size: 4.25rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  margin: 0.65rem 0;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+}
+
+.timer-digits.warning {
+  color: var(--color-warning);
+}
+
+.timer-digits.danger {
+  color: var(--color-danger);
+}
+
+.phase-pill {
+  display: inline-block;
+  padding: 0.35rem 1.15rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.control-btn-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+.control-btn-grid .btn {
+  width: 100%;
+}
+
+.single-btn-row {
+  margin-top: 0.65rem;
+}
+
+.single-btn-row .btn {
+  width: 100%;
+}
+
+/* Question Staging Card */
+.qm-question-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+}
+
+.select-wrapper {
+  margin-bottom: 1.25rem;
+}
+
+.question-preview-box {
+  background-color: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+.preview-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.preview-question-text {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin-bottom: 0.85rem;
+}
+
+.code-preview-block {
+  background-color: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #0284c7;
+  margin-bottom: 0.85rem;
+  overflow-x: auto;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+[data-theme="dark"] .code-preview-block,
+:root:not([data-theme="light"]) .code-preview-block {
+  color: #38bdf8;
+}
+
+.preview-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.preview-option-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.875rem;
+}
+
+.preview-option-item.correct {
+  background-color: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #34d399;
+  font-weight: 600;
+}
+
+.preview-opt-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-tertiary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.preview-option-item.correct .preview-opt-letter {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+/* ============================================================================
+ * Right Column: Telemetry Matrix & Alerts
+ * ============================================================================ */
+.qm-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Statistics Summary Bar */
+.telemetry-summary-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .telemetry-summary-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.15rem 1.35rem;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.35rem;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+
+/* 60-Workstation Telemetry Grid */
+.telemetry-grid-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+}
+
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 1400px) {
+  .telemetry-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .telemetry-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.terminal-tile {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  transition: all 0.15s ease;
+  position: relative;
+  cursor: default;
+}
+
+.terminal-tile:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--border-active);
+}
+
+.terminal-tile.online {
+  border-color: rgba(16, 185, 129, 0.3);
+  background-color: rgba(16, 185, 129, 0.04);
+}
+
+.terminal-tile.submitted {
+  border-color: rgba(190, 18, 60, 0.4);
+  background-color: rgba(190, 18, 60, 0.08);
+}
+
+.terminal-tile.incident {
+  border-color: rgba(244, 63, 94, 0.5);
+  background-color: rgba(244, 63, 94, 0.1);
+}
+
+.terminal-number {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.terminal-presence-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.35rem;
+}
+
+.terminal-presence-dot.online {
+  background-color: #10b981;
+}
+
+.terminal-presence-dot.offline {
+  background-color: #71717a;
+}
+
+.terminal-presence-dot.incident {
+  background-color: #f43f5e;
+}
+
+.terminal-score-tag {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.terminal-sub-status {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+  font-weight: 600;
+}
+
+/* Security Alert Feed */
+.alert-feed-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+}
+
+.alert-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.alert-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.95rem;
+  border-radius: var(--radius-md);
+  background-color: rgba(244, 63, 94, 0.06);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+  font-size: 0.8125rem;
+}
+
+.alert-item-time {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+/* Manual Score Override Modal */
+.override-modal-content {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-2xl);
+  max-width: 480px;
+  width: 100%;
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.override-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.override-form-group label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.override-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}

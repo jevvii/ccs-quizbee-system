@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OLFU IT Olympics Quiz Bee — Judge / Tabulator Panel</title>
+  <script>(function(){try{if(localStorage.getItem('quizbee_theme')==='light'||(!localStorage.getItem('quizbee_theme')&&window.matchMedia('(prefers-color-scheme: light)').matches))document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+  <link rel="stylesheet" href="/css/shared.css">
+  <link rel="stylesheet" href="/css/judge.css">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-logo-badge">
+        <img src="/logo/ccs-logo.png" alt="CCS Logo" class="brand-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span class="brand-logo-text" style="display: none;">ccs</span>
+      </div>
+      <div>
+        <div class="brand-title">OLFU IT Olympics 2026</div>
+        <div class="brand-subtitle">Judge &amp; Tabulator Panel</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <button id="btn-theme-toggle" class="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+        <svg class="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+      <button id="btn-refresh-queue" class="btn btn-secondary btn-sm">Refresh Queue</button>
+      <div class="flex items-center gap-2">
+        <span id="judge-status-dot" class="status-dot offline"></span>
+        <span id="judge-status-text" style="font-size: 0.8125rem; color: var(--text-secondary);">Connecting...</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="judge-container">
+    <!-- Queue Summary Bar -->
+    <section class="judge-header-bar">
+      <div class="judge-queue-meta">
+        <h1 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary);">Identification Review Queue</h1>
+        <span id="pending-count" class="pending-count-badge">0 Pending</span>
+      </div>
+      <div style="font-size: 0.8125rem; color: var(--text-secondary);">
+        1-Click Evaluation Mode: Approve awards base round points; Reject awards 0 points.
+      </div>
+    </section>
+
+    <!-- Real-Time Dispute Queue Container -->
+    <div id="judge-queue" class="dispute-queue">
+      <!-- Empty Queue Placeholder -->
+      <div id="empty-queue" class="queue-empty-message">
+        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">
+          No Pending Identification Submissions
+        </h3>
+        <p style="font-size: 0.8125rem; color: var(--text-secondary); max-width: 480px; margin: 0 auto;">
+          Any non-exact identification submissions from contestants will automatically appear here for real-time adjudication.
+        </p>
+      </div>
+    </div>
+
+    <!-- Resolved History Accordion/Log -->
+    <section style="margin-top: 3rem;">
+      <div class="card-header" style="border-bottom: 1px solid var(--border-subtle); margin-bottom: 1rem; padding-bottom: 0.75rem;">
+        <h2 class="card-title" style="font-size: 1rem;">Resolved Rulings History</h2>
+        <span id="resolved-count-badge" class="badge badge-slate">0 Resolved</span>
+      </div>
+      <div id="resolved-queue" class="dispute-queue" style="opacity: 0.85;">
+        <!-- Resolved items move here -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts (Strictly Local Offline Scripts - Zero CDN) -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/audio.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/judge.js"></script>
+</body>
+</html>

@@ -1,0 +1,506 @@
+/**
+ * public/css/shared.css
+ * OLFU IT Olympics LAN Quiz Bee System (ITPM 311)
+ * Modern Minimalist Design System (Dark & Light Theme / Maroon Accent / Zero-CDN)
+ */
+
+/* ============================================================================
+ * Design Tokens: Dark Theme (Default)
+ * ============================================================================ */
+:root {
+  /* Neutral Surface Ladder (Linear / shadcn Matte Dark) */
+  --bg-primary: #0c0c0e;
+  --bg-secondary: #121215;
+  --bg-tertiary: #18181c;
+  --bg-card: #121215;
+  --bg-card-hover: #16161b;
+  --bg-inset: #09090b;
+
+  /* Restrained Hairline Borders */
+  --border-subtle: #222227;
+  --border-active: #2e2e36;
+  --border-focus: #be123c;
+  --border-maroon: rgba(190, 18, 60, 0.35);
+
+  /* High-Contrast Typography */
+  --text-primary: #ffffff;
+  --text-secondary: #8d8d99;
+  --text-muted: #5e5e68;
+  --text-inverse: #ffffff;
+
+  /* Restrained Fatima Maroon / Rose Palette */
+  --color-maroon: #881337;
+  --color-maroon-dark: #4c0519;
+  --color-maroon-light: #9f1239;
+  --color-rose: #be123c;
+  --color-rose-bright: #e11d48;
+  --color-rose-muted: #fb7185;
+
+  /* Functional Accents */
+  --color-primary: #be123c;
+  --color-primary-light: #e11d48;
+  --color-accent: #f59e0b;
+  --color-accent-light: #fbbf24;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #f43f5e;
+  --color-info: #0ea5e9;
+  --color-purple: #8b5cf6;
+
+  /* Native System Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Rounded Corner Geometry */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+
+  /* Subtle Crisp Elevation */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow-maroon: 0 0 20px rgba(190, 18, 60, 0.2);
+  --shadow-glow-emerald: 0 0 20px rgba(16, 185, 129, 0.2);
+  --shadow-glow-gold: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+/* ============================================================================
+ * Design Tokens: Light Theme
+ * ============================================================================ */
+[data-theme="light"] {
+  /* Clean Slate Light Surfaces */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-inset: #f1f5f9;
+
+  /* Hairline Slate Borders */
+  --border-subtle: #e2e8f0;
+  --border-active: #cbd5e1;
+  --border-focus: #be123c;
+  --border-maroon: rgba(190, 18, 60, 0.25);
+
+  /* Deep High-Legibility Slate Text */
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --text-inverse: #ffffff;
+
+  /* Refined Maroon & Rose Accents (High Contrast) */
+  --color-maroon: #881337;
+  --color-maroon-dark: #4c0519;
+  --color-maroon-light: #9f1239;
+  --color-rose: #be123c;
+  --color-rose-bright: #9f1239;
+  --color-rose-muted: #881337;
+
+  --color-primary: #be123c;
+  --color-primary-light: #9f1239;
+  --color-accent: #d97706;
+  --color-accent-light: #b45309;
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-danger: #e11d48;
+  --color-info: #0284c7;
+  --color-purple: #7c3aed;
+
+  /* Soft Light Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-glow-maroon: 0 0 16px rgba(190, 18, 60, 0.15);
+  --shadow-glow-emerald: 0 0 16px rgba(5, 150, 105, 0.15);
+  --shadow-glow-gold: 0 0 16px rgba(217, 119, 6, 0.15);
+}
+
+/* ============================================================================
+ * Base Resets
+ * ============================================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ============================================================================
+ * Layout Components: Clean Minimalist App Header
+ * ============================================================================ */
+.app-header {
+  height: 60px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.75rem;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand-logo-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  background-color: #be123c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-full);
+}
+
+.brand-logo-text {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: lowercase;
+  letter-spacing: -0.02em;
+}
+
+.brand-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.theme-icon-sun {
+  display: block;
+}
+
+.theme-icon-moon {
+  display: none;
+}
+
+[data-theme="light"] .theme-icon-sun {
+  display: none;
+}
+
+[data-theme="light"] .theme-icon-moon {
+  display: block;
+}
+
+/* Status Indicators */
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.status-dot.online {
+  background-color: var(--color-success);
+}
+
+.status-dot.offline {
+  background-color: var(--color-danger);
+}
+
+.status-dot.idle {
+  background-color: var(--color-warning);
+}
+
+/* ============================================================================
+ * Clean Buttons (Flat / Minimalist)
+ * ============================================================================ */
+.btn {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  padding: 0.55rem 1rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  line-height: 1.25;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background-color: var(--color-rose);
+  color: #ffffff;
+  border: 1px solid var(--color-rose);
+  font-weight: 600;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-rose-bright);
+  border-color: var(--color-rose-bright);
+}
+
+.btn-secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--border-subtle);
+  border-color: var(--border-active);
+  color: var(--text-primary);
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: #ffffff;
+  border: 1px solid var(--color-danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #be123c;
+  border-color: #be123c;
+}
+
+.btn-accent {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-accent:hover:not(:disabled) {
+  background-color: var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.35rem;
+  font-size: 0.95rem;
+}
+
+/* ============================================================================
+ * Clean Badges
+ * ============================================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.badge-maroon {
+  background-color: rgba(190, 18, 60, 0.1);
+  color: var(--color-rose-muted);
+  border: 1px solid rgba(190, 18, 60, 0.25);
+}
+
+.badge-emerald {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--color-success);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.badge-gold {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--color-accent);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.badge-slate {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.badge-info {
+  background-color: rgba(14, 165, 233, 0.1);
+  color: var(--color-info);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+}
+
+/* ============================================================================
+ * Minimal Cards & Containers
+ * ============================================================================ */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================================
+ * Clean Input Controls
+ * ============================================================================ */
+input[type="text"],
+input[type="number"],
+input[type="password"],
+textarea,
+select {
+  background-color: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.875rem;
+  padding: 0.6rem 0.85rem;
+  transition: border-color 0.15s ease, background-color 0.2s ease;
+  width: 100%;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-rose);
+  outline: none;
+}
+
+/* Audio Widget Controls */
+.audio-widget {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.audio-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s ease;
+}
+
+.audio-btn:hover {
+  color: var(--text-primary);
+}
+
+.audio-slider {
+  width: 65px;
+  accent-color: var(--color-rose);
+  cursor: pointer;
+}
+
+/* ============================================================================
+ * Utilities
+ * ============================================================================ */
+.hidden { display: none !important; }
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.text-center { text-align: center; }
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.w-full { width: 100%; }
+
+.text-emerald { color: var(--color-success); }
+.text-gold { color: var(--color-accent); }
+.text-rose { color: var(--color-rose-muted); }
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1.5rem;
+  backdrop-filter: blur(4px);
+}

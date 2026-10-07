@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OLFU IT Olympics Quiz Bee — Stage Projector Display</title>
+  <script>(function(){try{if(localStorage.getItem('quizbee_theme')==='light'||(!localStorage.getItem('quizbee_theme')&&window.matchMedia('(prefers-color-scheme: light)').matches))document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+  <link rel="stylesheet" href="/css/shared.css">
+  <link rel="stylesheet" href="/css/projector.css">
+</head>
+<body>
+  <!-- 1080p Fixed Ratio Viewport -->
+  <div id="stage-container" class="stage-viewport">
+    <!-- Stage Header Bar -->
+    <header class="stage-header">
+      <div class="flex items-center gap-3">
+        <div class="brand-logo-badge" style="width: 34px; height: 34px;">
+          <img src="/logo/ccs-logo.png" alt="CCS Logo" class="brand-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="brand-logo-text" style="display: none;">ccs</span>
+        </div>
+        <div class="stage-brand-title">
+          OLFU <span>IT Olympics 2026</span> &middot; Digital Quiz Bee
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <span id="stage-round-name" class="badge badge-gold stage-round-pill">ROUND 1: EASY &bull; 1 POINT</span>
+        <div class="audio-widget">
+          <button id="btn-audio-mute" class="audio-btn" title="Toggle Sound">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+          </button>
+          <input type="range" id="audio-volume-slider" class="audio-slider" min="0" max="1" step="0.05" value="0.8">
+        </div>
+        <button id="btn-theme-toggle" class="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+          <svg class="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Interactive Audio Unlock Banner (Dismisses on first click) -->
+    <div id="audio-unlock-banner" class="stage-audio-banner">
+      Click anywhere to enable procedural audio effects
+    </div>
+
+    <!-- Main Stage Arena -->
+    <main class="stage-arena">
+      <!-- 1. Lobby Welcome Screen -->
+      <section id="stage-lobby" class="stage-lobby-view">
+        <div class="stage-lobby-emblem-badge">
+          <img src="/logo/ccs-logo.png" alt="CCS Logo" class="stage-lobby-emblem-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="brand-logo-text" style="display: none; font-size: 1.5rem;">ccs</span>
+        </div>
+        <span class="badge badge-maroon" style="font-size: 0.875rem; padding: 0.35rem 1rem; margin-bottom: 1.25rem;">College of Computer Studies</span>
+        <h1 class="stage-lobby-title">IT Olympics Quiz Bee</h1>
+        <p class="stage-lobby-sub">Local Area Network Tournament Engine &middot; Standby for Question Staging</p>
+      </section>
+
+      <!-- 2. Active Question Arena -->
+      <section id="stage-question-card" class="stage-question-card hidden">
+        <div class="stage-top-meta">
+          <div class="flex items-center gap-3">
+            <span id="stage-phase-pill" class="badge badge-info" style="font-size: 1.1rem; padding: 0.45rem 1.25rem;">READING PHASE</span>
+            <span id="stage-item-badge" class="badge badge-maroon stage-round-pill hidden" style="font-size: 1rem; padding: 0.45rem 1.15rem;">ITEM 1</span>
+          </div>
+          <!-- Animated Stage Timer -->
+          <div class="stage-timer-box">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <div id="stage-timer" class="stage-timer-digits">00:00</div>
+          </div>
+        </div>
+
+        <!-- Question Prompt (Flashed during staging, hidden after countdown starts) -->
+        <div id="stage-question-text" class="stage-question-text">
+          Question prompt will be projected here...
+        </div>
+
+        <!-- Syntax-highlighted Monospace Code Snippet Block -->
+        <pre id="stage-code-snippet" class="stage-code-block hidden"><code></code></pre>
+
+        <!-- Countdown Active Banner (Flashed when timer starts) -->
+        <div id="stage-countdown-notice" class="stage-countdown-notice hidden">
+          <div class="countdown-pulse-ring">
+            <span class="countdown-pulse-dot"></span>
+          </div>
+          <div class="countdown-notice-title">Countdown In Progress</div>
+          <div class="countdown-notice-sub">Workstation inputs unlocked &bull; Submit answers on contestant terminals</div>
+        </div>
+
+        <!-- MCQ Options 2x2 Grid -->
+        <div id="stage-options-grid" class="stage-options-grid hidden">
+          <div id="stage-opt-a" class="stage-option-card">
+            <span class="stage-option-letter">A</span>
+            <span class="stage-option-text" id="stage-text-a">Option A</span>
+          </div>
+          <div id="stage-opt-b" class="stage-option-card">
+            <span class="stage-option-letter">B</span>
+            <span class="stage-option-text" id="stage-text-b">Option B</span>
+          </div>
+          <div id="stage-opt-c" class="stage-option-card">
+            <span class="stage-option-letter">C</span>
+            <span class="stage-option-text" id="stage-text-c">Option C</span>
+          </div>
+          <div id="stage-opt-d" class="stage-option-card">
+            <span class="stage-option-letter">D</span>
+            <span class="stage-option-text" id="stage-text-d">Option D</span>
+          </div>
+        </div>
+
+        <!-- Answer Dramatic Reveal Card -->
+        <div id="reveal-card" class="reveal-card hidden">
+          <div class="reveal-title">Official Correct Answer</div>
+          <div id="correct-answer-text" class="reveal-answer">&mdash;</div>
+          <div id="answer-explanation" style="font-size: 1.25rem; color: var(--text-secondary);">&mdash;</div>
+        </div>
+      </section>
+
+      <!-- 3. Animated Leaderboard Podium Screen -->
+      <section id="stage-leaderboard" class="stage-leaderboard hidden">
+        <div class="text-center">
+          <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.25rem; color: var(--text-primary);">Tournament Standings</h2>
+          <p style="color: var(--text-secondary); font-size: 1.1rem;">Live Leaderboard &bull; Ranked by Total Points</p>
+        </div>
+
+        <!-- 3-Tier Dynamic Podium -->
+        <div id="podium-container" class="podium-container">
+          <!-- 2nd Place Silver (Left) -->
+          <div class="podium-column podium-silver">
+            <div class="podium-card">
+              <span class="badge badge-slate" style="margin-bottom: 0.25rem;">2ND PLACE</span>
+              <div id="podium-name-2" class="podium-name">&mdash;</div>
+              <div id="podium-score-2" class="podium-score">0 PTS</div>
+            </div>
+            <div class="podium-step">2</div>
+          </div>
+
+          <!-- 1st Place Gold (Center) -->
+          <div class="podium-column podium-gold">
+            <div class="podium-card" style="border: 1px solid var(--color-accent);">
+              <span class="badge badge-gold" style="margin-bottom: 0.25rem;">CHAMPION</span>
+              <div id="podium-name-1" class="podium-name">&mdash;</div>
+              <div id="podium-score-1" class="podium-score">0 PTS</div>
+            </div>
+            <div class="podium-step">1</div>
+          </div>
+
+          <!-- 3rd Place Bronze (Right) -->
+          <div class="podium-column podium-bronze">
+            <div class="podium-card">
+              <span class="badge badge-slate" style="margin-bottom: 0.25rem;">3RD PLACE</span>
+              <div id="podium-name-3" class="podium-name">&mdash;</div>
+              <div id="podium-score-3" class="podium-score">0 PTS</div>
+            </div>
+            <div class="podium-step">3</div>
+          </div>
+        </div>
+
+        <!-- Ranked Table for Ranks 4+ -->
+        <table id="stage-roster-table" class="stage-roster-table">
+          <thead>
+            <tr>
+              <th style="width: 80px;">Rank</th>
+              <th>Contestant Name</th>
+              <th>Terminal</th>
+              <th>Department / Section</th>
+              <th style="text-align: right;">Total Score</th>
+            </tr>
+          </thead>
+          <tbody id="stage-roster-tbody">
+            <!-- Dynamically populated rows -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- Scripts (Strictly Local Offline Scripts - Zero CDN) -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/audio.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/projector.js"></script>
+</body>
+</html>

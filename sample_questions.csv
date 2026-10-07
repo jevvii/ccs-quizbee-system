@@ -1,0 +1,9 @@
+round,type,question,code_snippet,option_a,option_b,option_c,option_d,correct_answer,synonyms,points,timer_seconds
+Easy,MCQ,"Which HTML tag is used to define an internal style sheet?","",<script>,<css>,<style>,<stylesheet>,C,,1,15
+Easy,MCQ,"In JavaScript, which operator is used to compare both value and data type?","",==,===,!=,=,B,,1,15
+Easy,MCQ,"What is the default port number for HTTP?","",21,22,80,443,C,,1,15
+Average,MCQ,"What will be the output of the following JavaScript code?","console.log(typeof NaN);",number,undefined,object,NaN,A,,2,30
+Average,IDENTIFICATION,"What SQL command is used to remove a table and its structure from a database entirely?","","","","","",DROP TABLE,"DROPTABLE; DROP",2,30
+Difficult,IDENTIFICATION,"In Python, what keyword is used to create an anonymous or inline function?","","","","","",lambda,"lambda function",3,45
+Difficult,IDENTIFICATION,"What is the time complexity of searching an element in a balanced Binary Search Tree (BST) with n nodes in big-O notation?","","","","","",O(log n),"O(logn); O(log(n))",3,45
+Clincher,IDENTIFICATION,"In computer networking, which protocol provides connectionless, unreliable datagram service at the Transport Layer?","","","","","",UDP,"User Datagram Protocol",5,30
