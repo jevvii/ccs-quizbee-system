@@ -165,7 +165,10 @@
 
         <!-- Form B: Identification Question -->
         <div id="id-container" class="id-form hidden" style="margin-top: 1.5rem;">
-          <label style="font-size: 0.8125rem; color: var(--text-secondary); font-weight: 600;">Type your answer below:</label>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label style="font-size: 0.8125rem; color: var(--text-secondary); font-weight: 600;">Type your answer below:</label>
+            <button type="button" id="btn-peek-answer" class="btn btn-sm hidden" style="font-size: 0.75rem; padding: 0.2rem 0.6rem; color: var(--text-muted); background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); cursor: pointer;">👁 Peek</button>
+          </div>
           <input type="text" id="answer-input" class="id-input-field" placeholder="Enter answer..." autocomplete="off">
           <button id="btn-submit-answer" class="btn btn-primary btn-lg" style="align-self: flex-end;">Submit Answer</button>
         </div>

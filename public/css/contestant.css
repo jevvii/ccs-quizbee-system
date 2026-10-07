@@ -331,24 +331,67 @@ input, textarea {
   border-color: var(--color-rose);
 }
 
+/* ============================================================================
+ * Locked Stealth Mode: Prevent Screen-Peeking / Shoulder Surfing
+ * When submissions are locked on contestant workstation, disguise the selected
+ * card so all 4 options look uniform with identical muted styling.
+ * ============================================================================ */
+.mcq-grid.is-locked .mcq-option-btn {
+  opacity: 0.65;
+  cursor: not-allowed;
+  border-color: var(--border-subtle) !important;
+  background-color: var(--bg-secondary) !important;
+  box-shadow: none !important;
+}
+
+.mcq-grid.is-locked .mcq-option-btn.selected {
+  border-color: var(--border-subtle) !important;
+  background-color: var(--bg-secondary) !important;
+  box-shadow: none !important;
+}
+
+.mcq-grid.is-locked .mcq-option-btn.selected .mcq-letter {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+/* Subtle discreet indicator readable only by the contestant right in front */
+.mcq-grid.is-locked .mcq-option-btn.selected::after {
+  content: '🔒 Saved';
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  opacity: 0.75;
+}
+
+/* Official answer reveal restores vibrant evaluation clarity */
+.mcq-grid.is-locked .mcq-option-btn.is-correct,
 .mcq-option-btn.is-correct {
   border-color: var(--color-success) !important;
   background-color: rgba(16, 185, 129, 0.12) !important;
   color: var(--color-success) !important;
+  opacity: 1 !important;
 }
 
+.mcq-grid.is-locked .mcq-option-btn.is-correct .mcq-letter,
 .mcq-option-btn.is-correct .mcq-letter {
   background-color: var(--color-success) !important;
   color: #ffffff !important;
   border-color: var(--color-success) !important;
 }
 
+.mcq-grid.is-locked .mcq-option-btn.is-incorrect,
 .mcq-option-btn.is-incorrect {
   border-color: var(--color-danger) !important;
   background-color: rgba(244, 63, 94, 0.12) !important;
   color: var(--color-danger) !important;
+  opacity: 1 !important;
 }
 
+.mcq-grid.is-locked .mcq-option-btn.is-incorrect .mcq-letter,
 .mcq-option-btn.is-incorrect .mcq-letter {
   background-color: var(--color-danger) !important;
   color: #ffffff !important;
@@ -376,6 +419,30 @@ input, textarea {
 
 .id-input-field:focus {
   border-color: var(--color-rose);
+}
+
+.id-input-field.is-masked {
+  letter-spacing: 0.25em;
+  font-family: var(--font-mono);
+  background-color: var(--bg-secondary);
+  color: var(--text-muted);
+}
+
+.btn-peek-answer {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  padding: 0.2rem 0.6rem;
+  color: var(--text-muted);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-peek-answer:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
 }
 
 /* ============================================================================

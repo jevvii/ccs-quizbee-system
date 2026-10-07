@@ -9,6 +9,7 @@
 
   let socket = null;
   let currentQuestion = null;
+  let currentPhase = 'LOBBY';
 
   // DOM Elements - Stage Sections
   const stageLobby = document.getElementById('stage-lobby');
@@ -142,15 +143,18 @@
 
   function applyGameState(state) {
     if (!state) return;
-    setPhase(state.phase);
+    currentPhase = state.phase;
 
     if (state.currentQuestion) {
       currentQuestion = state.currentQuestion;
       renderQuestion(state.currentQuestion);
     }
+
+    setPhase(state.phase);
   }
 
   function setPhase(phase) {
+    currentPhase = phase;
     switch (phase) {
       case 'LOBBY':
         stageLobby.classList.remove('hidden');
@@ -284,33 +288,45 @@
 
     if (elQuestionText) {
       elQuestionText.textContent = q.question || q.question_text || '';
-      elQuestionText.classList.remove('hidden');
-      elQuestionText.classList.remove('staged-flash');
-      void elQuestionText.offsetWidth; // trigger reflow for animation
-      elQuestionText.classList.add('staged-flash');
     }
 
-    if (elStageCountdownNotice) {
-      elStageCountdownNotice.classList.add('hidden');
-    }
-
-    if (q.code_snippet) {
-      elCodeSnippet.classList.remove('hidden');
-      if (elCodeBlock) elCodeBlock.textContent = q.code_snippet;
-    } else {
-      elCodeSnippet.classList.add('hidden');
+    if (q.code_snippet && elCodeBlock) {
+      elCodeBlock.textContent = q.code_snippet;
     }
 
     const isMcq = q.type === 'MCQ' || q.question_type === 'MCQ';
     if (isMcq && q.options) {
-      elOptionsGrid.classList.remove('hidden');
       const opts = typeof q.options === 'string' ? JSON.parse(q.options) : q.options;
       ['A', 'B', 'C', 'D'].forEach((letter) => {
         const textEl = document.getElementById(`stage-text-${letter.toLowerCase()}`);
         if (textEl) textEl.textContent = opts[letter] || `Option ${letter}`;
       });
+    }
+
+    // In COUNTDOWN phase, question prompt, code snippet, and options grid disappear
+    if (currentPhase === 'COUNTDOWN') {
+      if (elQuestionText) elQuestionText.classList.add('hidden');
+      if (elCodeSnippet) elCodeSnippet.classList.add('hidden');
+      if (elOptionsGrid) elOptionsGrid.classList.add('hidden');
+      if (elStageCountdownNotice) elStageCountdownNotice.classList.remove('hidden');
     } else {
-      elOptionsGrid.classList.add('hidden');
+      if (elStageCountdownNotice) elStageCountdownNotice.classList.add('hidden');
+      if (elQuestionText) {
+        elQuestionText.classList.remove('hidden');
+        elQuestionText.classList.remove('staged-flash');
+        void elQuestionText.offsetWidth; // trigger reflow for animation
+        elQuestionText.classList.add('staged-flash');
+      }
+      if (q.code_snippet && elCodeSnippet) {
+        elCodeSnippet.classList.remove('hidden');
+      } else if (elCodeSnippet) {
+        elCodeSnippet.classList.add('hidden');
+      }
+      if (isMcq && elOptionsGrid) {
+        elOptionsGrid.classList.remove('hidden');
+      } else if (elOptionsGrid) {
+        elOptionsGrid.classList.add('hidden');
+      }
     }
   }
 

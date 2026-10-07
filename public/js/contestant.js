@@ -55,6 +55,7 @@
   const elIdContainer = document.getElementById('id-container');
   const inputAnswer = document.getElementById('answer-input');
   const btnSubmitAnswer = document.getElementById('btn-submit-answer');
+  const btnPeekAnswer = document.getElementById('btn-peek-answer');
 
   // Anti-Cheat Modal
   const modalFullscreenWarning = document.getElementById('fullscreen-warning');
@@ -350,10 +351,15 @@
         submittedAnswerStatus = 'INCORRECT';
         showSubmissionStatus("Time's up! No submission recorded • Awaiting Quizmaster reveal");
       } else {
+        const isMcq = activeQuestion && (activeQuestion.type === 'MCQ' || activeQuestion.question_type === 'MCQ');
         if (submittedAnswerStatus === 'PENDING') {
-          showSubmissionStatus(`Time's up! Answer recorded: "${lastSubmittedAnswer}" • Under Judge Review`);
+          showSubmissionStatus("Time's up! Answer recorded (masked) • Under Judge Review");
         } else {
-          showSubmissionStatus(`Time's up! Answer recorded: "${lastSubmittedAnswer}" • Awaiting Quizmaster reveal`);
+          if (isMcq) {
+            showSubmissionStatus("Time's up! Choice recorded & concealed • Awaiting Quizmaster reveal");
+          } else {
+            showSubmissionStatus("Time's up! Answer recorded (masked) • Awaiting Quizmaster reveal");
+          }
         }
       }
       if (window.QuizAudio) window.QuizAudio.playLock();
@@ -481,6 +487,13 @@
     }
 
     const isMcq = q.type === 'MCQ' || q.question_type === 'MCQ';
+    if (elMcqContainer) elMcqContainer.classList.remove('is-locked');
+    if (elIdContainer) elIdContainer.classList.remove('is-locked');
+    if (btnPeekAnswer) {
+      btnPeekAnswer.classList.add('hidden');
+      btnPeekAnswer.textContent = '👁 Peek';
+    }
+
     if (isMcq) {
       elIdContainer.classList.add('hidden');
       elMcqContainer.classList.remove('hidden');
@@ -500,6 +513,8 @@
       elIdContainer.classList.remove('hidden');
       if (inputAnswer) {
         inputAnswer.value = '';
+        inputAnswer.type = 'text';
+        inputAnswer.classList.remove('is-masked');
         inputAnswer.style.borderColor = '';
       }
     }
@@ -561,6 +576,20 @@
         }
       });
     }
+
+    // Discreet Peek Button for Identification
+    if (btnPeekAnswer) {
+      btnPeekAnswer.addEventListener('click', () => {
+        if (!inputAnswer) return;
+        if (inputAnswer.type === 'password') {
+          inputAnswer.type = 'text';
+          btnPeekAnswer.textContent = '🔒 Hide';
+        } else {
+          inputAnswer.type = 'password';
+          btnPeekAnswer.textContent = '👁 Peek';
+        }
+      });
+    }
   }
 
   function submitAnswer(answerText) {
@@ -569,7 +598,13 @@
     hasSubmittedCurrent = true;
     lastSubmittedAnswer = answerText;
     lockInputs();
-    showSubmissionStatus(`Submitting answer: "${answerText}"...`);
+
+    const isMcq = activeQuestion && (activeQuestion.type === 'MCQ' || activeQuestion.question_type === 'MCQ');
+    if (isMcq) {
+      showSubmissionStatus('Submitting choice...');
+    } else {
+      showSubmissionStatus('Submitting answer (masked)...');
+    }
 
     socket.emit('contestant:submit', {
       questionId: activeQuestion.id,
@@ -594,10 +629,14 @@
 
         if (isPending) {
           submittedAnswerStatus = 'PENDING';
-          showSubmissionStatus(`⏳ Answer Submitted: "${answerText}" • Under Judge Review`);
+          showSubmissionStatus('⏳ Answer Submitted (Masked) • Under Judge Review');
         } else {
           submittedAnswerStatus = isCorrect ? 'CORRECT' : 'INCORRECT';
-          showSubmissionStatus(`✓ Answer Recorded: "${answerText}" • Awaiting Quizmaster reveal`);
+          if (isMcq) {
+            showSubmissionStatus('✓ Choice Recorded & Concealed • Awaiting Quizmaster reveal');
+          } else {
+            showSubmissionStatus('✓ Answer Recorded (Masked) • Awaiting Quizmaster reveal');
+          }
         }
       } else {
         showSubmissionStatus(`Submission: ${ack?.error || 'Rejected by server'}`);
@@ -609,6 +648,17 @@
     if (!data) return;
     const officialAnswer = (data.correctAnswer || '').trim();
     const correctUpper = officialAnswer.toUpperCase();
+
+    // Release stealth disguise on reveal
+    if (elMcqContainer) elMcqContainer.classList.remove('is-locked');
+    if (elIdContainer) elIdContainer.classList.remove('is-locked');
+    if (inputAnswer) {
+      inputAnswer.type = 'text';
+      inputAnswer.classList.remove('is-masked');
+    }
+    if (btnPeekAnswer) {
+      btnPeekAnswer.classList.add('hidden');
+    }
 
     // 1. If MCQ, highlight the official correct option in green
     const isMcq = activeQuestion && (activeQuestion.type === 'MCQ' || activeQuestion.question_type === 'MCQ');
@@ -671,7 +721,23 @@
     mcqOptionButtons.forEach((btn) => {
       btn.disabled = true;
     });
-    if (inputAnswer) inputAnswer.disabled = true;
+    if (elMcqContainer) {
+      elMcqContainer.classList.add('is-locked');
+    }
+    if (elIdContainer) {
+      elIdContainer.classList.add('is-locked');
+    }
+    if (inputAnswer) {
+      inputAnswer.disabled = true;
+      if (hasSubmittedCurrent || inputAnswer.value) {
+        inputAnswer.type = 'password';
+        inputAnswer.classList.add('is-masked');
+        if (btnPeekAnswer) {
+          btnPeekAnswer.classList.remove('hidden');
+          btnPeekAnswer.textContent = '👁 Peek';
+        }
+      }
+    }
     if (btnSubmitAnswer) btnSubmitAnswer.disabled = true;
   }
 
@@ -679,9 +745,21 @@
     mcqOptionButtons.forEach((btn) => {
       btn.disabled = false;
     });
+    if (elMcqContainer) {
+      elMcqContainer.classList.remove('is-locked');
+    }
+    if (elIdContainer) {
+      elIdContainer.classList.remove('is-locked');
+    }
     if (inputAnswer) {
       inputAnswer.disabled = false;
+      inputAnswer.type = 'text';
+      inputAnswer.classList.remove('is-masked');
       inputAnswer.focus();
+    }
+    if (btnPeekAnswer) {
+      btnPeekAnswer.classList.add('hidden');
+      btnPeekAnswer.textContent = '👁 Peek';
     }
     if (btnSubmitAnswer) btnSubmitAnswer.disabled = false;
   }

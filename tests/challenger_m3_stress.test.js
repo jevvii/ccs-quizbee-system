@@ -769,6 +769,7 @@ describe('Milestone 3 Empirical Challenge: Procedural Audio & UI Controllers', (
       doc.register(new MockElement('div', 'id-container', 'hidden'));
       doc.register(new MockElement('input', 'answer-input'));
       doc.register(new MockElement('button', 'btn-submit-answer'));
+      doc.register(new MockElement('button', 'btn-peek-answer', 'hidden'));
 
       doc.register(new MockElement('div', 'fullscreen-warning', 'hidden'));
       doc.register(new MockElement('button', 'btn-reenter-fullscreen'));
@@ -1543,6 +1544,7 @@ describe('Milestone 3 Empirical Challenge: Procedural Audio & UI Controllers', (
       doc.register(snippet);
 
       doc.register(new MockElement('div', 'stage-options-grid', 'hidden'));
+      doc.register(new MockElement('div', 'stage-countdown-notice', 'hidden'));
       ['a', 'b', 'c', 'd'].forEach((l) => {
         doc.register(new MockElement('div', `stage-opt-${l}`));
         doc.register(new MockElement('span', `stage-text-${l}`));
@@ -1620,9 +1622,9 @@ describe('Milestone 3 Empirical Challenge: Procedural Audio & UI Controllers', (
       loadProjectorController();
 
       mockSocket.trigger('game:phase:change', {
-        phase: 'COUNTDOWN',
+        phase: 'READING',
         state: {
-          phase: 'COUNTDOWN',
+          phase: 'READING',
           currentQuestion: {
             round: 'average',
             points: 2,
@@ -1639,6 +1641,27 @@ describe('Milestone 3 Empirical Challenge: Procedural Audio & UI Controllers', (
       assert.strictEqual(doc.getElementById('stage-code-snippet').classList.contains('hidden'), false);
       assert.strictEqual(doc.getElementById('stage-options-grid').classList.contains('hidden'), false);
       assert.strictEqual(doc.getElementById('stage-text-b').textContent, 'object');
+
+      // On timer countdown start, question prompt, code snippet, and options disappear from stage
+      mockSocket.trigger('game:phase:change', {
+        phase: 'COUNTDOWN',
+        state: {
+          phase: 'COUNTDOWN',
+          currentQuestion: {
+            round: 'average',
+            points: 2,
+            question: 'Identify output:',
+            code_snippet: 'console.log(typeof null);',
+            type: 'MCQ',
+            options: { A: 'null', B: 'object', C: 'undefined', D: 'number' }
+          }
+        }
+      });
+
+      assert.strictEqual(doc.getElementById('stage-question-text').classList.contains('hidden'), true);
+      assert.strictEqual(doc.getElementById('stage-code-snippet').classList.contains('hidden'), true);
+      assert.strictEqual(doc.getElementById('stage-options-grid').classList.contains('hidden'), true);
+      assert.strictEqual(doc.getElementById('stage-countdown-notice').classList.contains('hidden'), false);
     });
 
     it('4.3 Answer dramatic reveal card & correct option highlighting', () => {
