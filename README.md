@@ -260,6 +260,8 @@ Comprehensive documentation submitted for the **ITPM 311 (IT Project Management)
 * **Department**: College of Computer Studies (CCS)
 * **Event**: Fatima IT Olympics — Inter-Campus Quiz Bee Championship
 * **Lead Developer / PM**: [Jevvii Marcelo](https://github.com/jevvii) (`@jevvii`)
+* **Contributors**:
+  * [John Kyle Caampued](https://github.com/jscaampued5745val) (`@jscaampued5745val`)
 
 ---
 
