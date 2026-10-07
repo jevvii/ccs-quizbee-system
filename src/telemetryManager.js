@@ -236,7 +236,31 @@ class TelemetryManager extends EventEmitter {
     const term = this.terminals.get(String(pin));
     if (term) {
       term.score = newScore;
+      this.emit('score:update', {
+        pin: String(pin),
+        terminalNumber: term.terminalNumber,
+        score: newScore,
+        terminal: { ...term }
+      });
+      this.emit('terminal:update', { ...term });
     }
+  }
+
+  /**
+   * Synchronize all contestant total scores from authoritative SQLite CONTESTANTS table
+   */
+  syncScoresFromDb() {
+    if (!this.db || typeof this.db.getAllContestants !== 'function') return;
+    try {
+      const contestants = this.db.getAllContestants() || [];
+      for (const c of contestants) {
+        const term = this.terminals.get(String(c.pin));
+        if (term) {
+          term.score = c.total_score || 0;
+          if (c.full_name) term.fullName = c.full_name;
+        }
+      }
+    } catch (_) {}
   }
 
   /**
@@ -358,6 +382,7 @@ class TelemetryManager extends EventEmitter {
    * @returns {Object}
    */
   getSnapshot() {
+    this.syncScoresFromDb();
     const list = Array.from(this.terminals.values()).sort((a, b) => a.terminalNumber - b.terminalNumber);
     const onlineCount = list.filter(t => t.status === 'ONLINE').length;
     const totalIncidents = list.reduce((sum, t) => sum + t.incidentCount, 0);

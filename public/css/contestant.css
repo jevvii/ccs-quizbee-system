@@ -336,35 +336,28 @@ input, textarea {
  * When submissions are locked on contestant workstation, disguise the selected
  * card so all 4 options look uniform with identical muted styling.
  * ============================================================================ */
-.mcq-grid.is-locked .mcq-option-btn {
+.mcq-grid.is-locked .mcq-option-btn,
+.mcq-grid.is-locked .mcq-option-btn.selected {
   opacity: 0.65;
   cursor: not-allowed;
   border-color: var(--border-subtle) !important;
   background-color: var(--bg-secondary) !important;
   box-shadow: none !important;
+  color: var(--text-secondary) !important;
 }
 
-.mcq-grid.is-locked .mcq-option-btn.selected {
-  border-color: var(--border-subtle) !important;
-  background-color: var(--bg-secondary) !important;
-  box-shadow: none !important;
-}
-
+.mcq-grid.is-locked .mcq-option-btn .mcq-letter,
 .mcq-grid.is-locked .mcq-option-btn.selected .mcq-letter {
   background-color: var(--bg-tertiary) !important;
   color: var(--text-secondary) !important;
   border-color: var(--border-subtle) !important;
 }
 
-/* Subtle discreet indicator readable only by the contestant right in front */
+/* Ensure no visual markers or pseudo-elements appear on any option when locked */
+.mcq-grid.is-locked .mcq-option-btn::after,
 .mcq-grid.is-locked .mcq-option-btn.selected::after {
-  content: '🔒 Saved';
-  margin-left: auto;
-  font-size: 0.75rem;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  letter-spacing: 0.04em;
-  opacity: 0.75;
+  content: none !important;
+  display: none !important;
 }
 
 /* Official answer reveal restores vibrant evaluation clarity */
@@ -426,6 +419,8 @@ input, textarea {
   font-family: var(--font-mono);
   background-color: var(--bg-secondary);
   color: var(--text-muted);
+  -webkit-text-security: disc;
+  text-security: disc;
 }
 
 .btn-peek-answer {

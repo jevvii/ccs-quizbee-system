@@ -54,6 +54,15 @@ class SocketHandler {
   // =========================================================================
 
   _bindEngineEvents() {
+    // Forward TelemetryManager score updates directly to Quizmaster
+    this.telemetryManager.on('score:update', (data) => {
+      this.io.to('room:quizmaster').emit('qm:telemetry:score', {
+        pin: data.pin,
+        terminalNumber: data.terminalNumber,
+        score: data.score
+      });
+    });
+
     // Authoritative Phase Change Hook
     this.engine.on('phase:change', ({ prevPhase, newPhase, state, autoExpired }) => {
       if (newPhase === 'READING') {
@@ -68,6 +77,10 @@ class SocketHandler {
         autoExpired: !!autoExpired,
         state
       });
+
+      // Synchronize latest telemetry snapshot with Quizmaster
+      const snapshot = this.telemetryManager.getSnapshot();
+      this.io.to('room:quizmaster').emit('qm:telemetry:snapshot', snapshot);
 
       // 2. Broadcast unredacted state to Judges
       this.io.to('room:judges').emit('game:phase:change', {
@@ -984,6 +997,7 @@ class SocketHandler {
           dbInstance.prepare('UPDATE CONTESTANTS SET total_score = ? WHERE pin = ?').run(newScore, pin);
         }
         this.telemetryManager.updateScore(pin, newScore);
+        this.io.to('room:quizmaster').emit('qm:telemetry:snapshot', this.telemetryManager.getSnapshot());
 
         // Notify contestant
         this.io.to(`contestant:${pin}`).emit('contestant:score:update', {

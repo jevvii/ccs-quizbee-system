@@ -200,6 +200,27 @@
       handleTelemetryAlert(alert);
     });
 
+    socket.on('qm:telemetry:score', (data) => {
+      if (!data || !data.pin) return;
+      const scoreEl = document.getElementById(`score-${data.pin}`);
+      if (scoreEl && data.score !== undefined) {
+        scoreEl.textContent = `${data.score} PTS`;
+      }
+    });
+
+    socket.on('leaderboard:update', (data) => {
+      if (data && Array.isArray(data.leaderboard)) {
+        data.leaderboard.forEach((item) => {
+          if (item && item.pin) {
+            const scoreEl = document.getElementById(`score-${item.pin}`);
+            if (scoreEl && item.score !== undefined) {
+              scoreEl.textContent = `${item.score} PTS`;
+            }
+          }
+        });
+      }
+    });
+
     socket.on('qm:questions:updated', () => {
       fetchQuestionBank();
     });
@@ -223,6 +244,7 @@
       if (newPhase === 'READING') {
         resetSubmissionsOnGrid();
       }
+      socket.emit('qm:telemetry:request');
     });
 
     socket.on('game:tick', (data) => {
@@ -240,14 +262,26 @@
     socket.on('game:question:lock', () => {
       updateTimerDisplay(0);
       if (window.QuizAudio) window.QuizAudio.playLock();
+      socket.emit('qm:telemetry:request');
     });
 
     socket.on('game:answer:reveal', () => {
       if (window.QuizAudio) window.QuizAudio.playCorrect();
+      socket.emit('qm:telemetry:request');
     });
 
-    socket.on('game:leaderboard', () => {
+    socket.on('game:leaderboard', (data) => {
       if (window.QuizAudio) window.QuizAudio.playFanfare();
+      if (data && Array.isArray(data.leaderboard)) {
+        data.leaderboard.forEach((item) => {
+          if (item && item.pin) {
+            const scoreEl = document.getElementById(`score-${item.pin}`);
+            if (scoreEl && item.score !== undefined) {
+              scoreEl.textContent = `${item.score} PTS`;
+            }
+          }
+        });
+      }
     });
   }
 
@@ -582,6 +616,11 @@
     btnCancelOverride.addEventListener('click', () => {
       modalOverride.classList.add('hidden');
     });
+    if (modalOverride) {
+      modalOverride.addEventListener('click', (e) => {
+        if (e.target === modalOverride) modalOverride.classList.add('hidden');
+      });
+    }
 
     btnSubmitOverride.addEventListener('click', () => {
       const pin = inputOverridePin.value.trim();
@@ -640,6 +679,12 @@
     if (btnCancelImport) {
       btnCancelImport.addEventListener('click', () => {
         if (modalImport) modalImport.classList.add('hidden');
+      });
+    }
+
+    if (modalImport) {
+      modalImport.addEventListener('click', (e) => {
+        if (e.target === modalImport) modalImport.classList.add('hidden');
       });
     }
 
