@@ -496,6 +496,10 @@ select:focus {
 .modal-overlay,
 .modal-backdrop {
   position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   inset: 0;
   top: 0;
   left: 0;
@@ -510,3 +514,4 @@ select:focus {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
+
