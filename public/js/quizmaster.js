@@ -567,7 +567,12 @@
         alert('Please select a question from the dropdown first.');
         return;
       }
-      socket.emit('qm:question:stage', { questionId: qId });
+      socket.emit('qm:question:stage', { questionId: qId }, (res) => {
+        if (res && res.success === false) {
+          alert(`Unable to stage question: ${res.message || res.error || 'Unknown error'}.\nThe question list will be refreshed.`);
+          fetchQuestionBank();
+        }
+      });
     });
 
     btnStartTimer.addEventListener('click', () => {
@@ -618,7 +623,9 @@
     });
     if (modalOverride) {
       modalOverride.addEventListener('click', (e) => {
-        if (e.target === modalOverride) modalOverride.classList.add('hidden');
+        if (e.target === modalOverride) {
+          modalOverride.classList.add('hidden');
+        }
       });
     }
 
@@ -684,10 +691,22 @@
 
     if (modalImport) {
       modalImport.addEventListener('click', (e) => {
-        if (e.target === modalImport) modalImport.classList.add('hidden');
+        if (e.target === modalImport) {
+          modalImport.classList.add('hidden');
+        }
       });
     }
 
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (modalOverride && !modalOverride.classList.contains('hidden')) {
+          modalOverride.classList.add('hidden');
+        }
+        if (modalImport && !modalImport.classList.contains('hidden')) {
+          modalImport.classList.add('hidden');
+        }
+      }
+    });
     if (btnSubmitImport) {
       btnSubmitImport.addEventListener('click', () => {
         if (!inputCsvFile || !inputCsvFile.files || !inputCsvFile.files[0]) {

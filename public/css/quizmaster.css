@@ -378,6 +378,7 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  z-index: 1000;
   z-index: 9999 !important;
   padding: 1.5rem;
   backdrop-filter: blur(8px);
@@ -414,24 +415,27 @@
   border-bottom: 1px solid var(--border-subtle);
 }
 
-.modal-actions,
-.override-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 1.75rem;
-}
-
+.form-group,
 .override-form-group {
   margin-bottom: 1.25rem;
 }
 
+.form-group label,
+.form-label,
 .override-form-group label {
   display: block;
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--text-secondary);
   margin-bottom: 0.4rem;
+}
+
+.modal-actions,
+.override-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
 }
 
 @keyframes qmModalPop {
@@ -444,3 +448,5 @@
     transform: scale(1) translateY(0);
   }
 }
+
+
