@@ -262,6 +262,8 @@ Comprehensive documentation submitted for the **ITPM 311 (IT Project Management)
 * **Lead Developer / PM**: [Jevvii Marcelo](https://github.com/jevvii) (`@jevvii`)
 * **Contributors**:
   * [John Kyle Caampued](https://github.com/jscaampued5745val) (`@jscaampued5745val`)
+  * [Deutz Cymar Galila](https://github.com/deutzgalila) (`@deutzgalila@gmail.com`)
+  * [Joshua Christian Jocson Mirang](https://github.com/joshua0331)
 
 ---
 
